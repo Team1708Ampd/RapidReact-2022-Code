@@ -37,11 +37,14 @@ public class SwerveWheel extends PIDSubsystem implements SwerveDrivetrainConstan
         // Reset all of the settings on startup
         steerMotor.configFactoryDefault();
 
+        // Set the feedback device for the steering (turning) Talon SRX
+        steerMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+
         // Set the current quadrature position relative to the analog position to make sure motor has 0 position on startup
         steerMotor.setSelectedSensorPosition(getAbsAngleDeg());
 
-        // Set the input range of the PIDF so that it will only accept angles between -180 to 180 and set it to continuous
-        getController().enableContinuousInput(-180, 180);
+        // Set the input range of the PIDF so that it will only accept angles between 0 to 360 and set it to continuous
+        getController().enableContinuousInput(0, 360);
 
         // Sets name for viewing in SmartDashboard
         this.setName(name);
@@ -49,7 +52,7 @@ public class SwerveWheel extends PIDSubsystem implements SwerveDrivetrainConstan
 
     // Get the current angle of the analog encoder
     private int getAbsAngleDeg(){
-        return (int)(180 * (absEnc.getAbsolutePosition() - countsWhenFrwd));   
+        return (int)((absEnc.getAbsolutePosition() - countsWhenFrwd));   
     }
 
     // Get current ticks
@@ -63,7 +66,9 @@ public class SwerveWheel extends PIDSubsystem implements SwerveDrivetrainConstan
 
     @Override
     protected double getMeasurement() {
-        return absEnc.getAbsolutePosition();
+        System.out.println("Motor: " + this.name);
+        System.out.println("Angle: " + getAbsAngleDeg());
+        return getAbsAngleDeg();
     }
 
     @Override

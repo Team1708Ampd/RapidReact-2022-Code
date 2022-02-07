@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private Command m_autonomousCommand;
   private static SwerveWheelController swrvCtrl;
+  private int count = 0;
 
   //public static Controller driver;
 
@@ -90,15 +91,20 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    System.out.println("made it to autonomous periodic:" + count);
+     
+     if (count < 100)
+     {
+       swrvCtrl.drive(0.15, 0, 0, 0);
+     }
+     else if (count >= 100 && count <= 200)
+     {
+       swrvCtrl.drive(0, 0, 0, 0);
+     }
+     else {
+       count = 0;
+     }
+     count++;
   }
 
   /** This function is called once when teleop is enabled. */
