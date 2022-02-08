@@ -16,24 +16,24 @@ public class TeleopDrive extends CommandBase {
         addRequirements(swerve);
     }
 
-    // @Override
-    // public void initialize(){
-    //     currentFOD = swerve.getFOD();
+    @Override
+    public void initialize(){
+        currentFOD = swerve.getFOD();
 
-    //     swerve.resetGyro();
-    // }
+        swerve.resetGyro();
+    }
 
-    // @Override
-    // public void execute() {
-    //     if (Robot.driver.getDriverAButtonPressed()) {
-    //         swerve.resetGyro();
-    //     }
+    @Override
+    public void execute() {
+        if (Robot.joystick.getAButtonPressed()) {
+            swerve.resetGyro();
+        }
 
-    //     if (Robot.driver.getDriverBButtonPressed()) {
-    //         currentFOD = !currentFOD;
-    //         swerve.setFOD(currentFOD);
-    //     }
+        if (Robot.joystick.getBButtonPressed()) {
+            currentFOD = !currentFOD;
+            swerve.setFOD(currentFOD);
+        }
 
-    //     swerve.drive(Robot.driver.getDriverLeftStickX(), Robot.driver.getDriverLeftStickY(), Robot.driver.getDriverRightStickX(), swerve.gyroAngle());
-    // }
+        swerve.drive(Robot.joystick.getRawAxis(0), Robot.joystick.getRawAxis(1), Robot.joystick.getRawAxis(4), swerve.gyroAngle());
+    }
 }

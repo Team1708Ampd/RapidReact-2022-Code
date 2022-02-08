@@ -5,10 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.output.commands.TeleopDrive;
 import frc.robot.subsystems.drivetrain.SwerveWheelController;
 //import frc.robot.subsystems.controller.Controller;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -31,11 +33,12 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private Command m_autonomousCommand;
-  private static SwerveWheelController swrvCtrl;
+  private static SwerveWheelController swerve;
   private int count = 0;
+  private boolean currentFOD = false;
 
   //public static Controller driver;
-
+  public static XboxController joystick = new XboxController(0);
 
 
   /**
@@ -48,16 +51,18 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    swrvCtrl = SwerveWheelController.getInstance();
+    swerve = SwerveWheelController.getInstance();
 
   }
 
   /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
+   * This function is called every robot packet, no matter the mode. Use this for
+   * items like diagnostics that you want ran during disabled, autonomous,
+   * teleoperated and test.
    *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
+   * <p>
+   * This runs after the mode specific periodic functions, but before LiveWindow
+   * and SmartDashboard integrated updating.
    */
   @Override
   public void robotPeriodic() 
@@ -95,11 +100,11 @@ public class Robot extends TimedRobot {
      
      if (count < 100)
      {
-       swrvCtrl.drive(0.15, 0, 0, 0);
+       swerve.drive(0.15, 0, 0, 0);
      }
      else if (count >= 100 && count <= 200)
      {
-       swrvCtrl.drive(0, 0, 0, 0);
+       swerve.drive(0, 0, 0, 0);
      }
      else {
        count = 0;
@@ -112,9 +117,9 @@ public class Robot extends TimedRobot {
   public void teleopInit() 
   {
     System.out.println("Teleop operation started");
-    
 
-    
+    currentFOD = swerve.getFOD();
+    swerve.resetGyro();
   }
 
   /** This function is called periodically during operator control. */
@@ -125,7 +130,16 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }       
     
+    if (Robot.joystick.getAButtonPressed()) {
+      swerve.resetGyro();
+    }
 
+    if (Robot.joystick.getBButtonPressed()) {
+      currentFOD = !currentFOD;
+      swerve.setFOD(currentFOD);
+    }
+
+    swerve.drive(Robot.joystick.getRawAxis(0), Robot.joystick.getRawAxis(1), Robot.joystick.getRawAxis(4), swerve.gyroAngle());
   }
 
   /** This function is called once when the robot is disabled. */
