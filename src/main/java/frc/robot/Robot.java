@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.output.commands.TeleopDrive;
+import frc.robot.subsystems.controller.Controller;
 import frc.robot.subsystems.drivetrain.SwerveWheelController;
 //import frc.robot.subsystems.controller.Controller;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -35,10 +36,11 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private static SwerveWheelController swerve;
   private int count = 0;
-  private boolean currentFOD = false;
+  private static CommandScheduler scheduler = CommandScheduler.getInstance();
+
 
   //public static Controller driver;
-  public static XboxController joystick = new XboxController(0);
+  public static Controller joystick = new Controller(0);
 
 
   /**
@@ -117,9 +119,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() 
   {
     System.out.println("Teleop operation started");
-
-    currentFOD = swerve.getFOD();
-    swerve.resetGyro();
   }
 
   /** This function is called periodically during operator control. */
@@ -129,17 +128,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }       
-    
-    if (Robot.joystick.getAButtonPressed()) {
-      swerve.resetGyro();
-    }
-
-    if (Robot.joystick.getBButtonPressed()) {
-      currentFOD = !currentFOD;
-      swerve.setFOD(currentFOD);
-    }
-
-    swerve.drive(Robot.joystick.getRawAxis(0), Robot.joystick.getRawAxis(1), Robot.joystick.getRawAxis(4), swerve.gyroAngle());
   }
 
   /** This function is called once when the robot is disabled. */
@@ -156,5 +144,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    scheduler.run();
+  }
 }
