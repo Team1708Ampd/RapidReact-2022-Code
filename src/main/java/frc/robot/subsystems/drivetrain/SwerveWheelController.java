@@ -20,17 +20,17 @@ public class SwerveWheelController extends SubsystemBase implements SwerveDrivet
     private SwerveWheelDrive backRightDrive = null;
     private SwerveWheelDrive backLeftDrive = null;
     
-    private SwerveWheel frontRight = null;
-    private SwerveWheel frontLeft = null;
-    private SwerveWheel backRight = null;
-    private SwerveWheel backLeft = null;
+    public SwerveWheel frontRight = null;
+    public SwerveWheel frontLeft = null;
+    public SwerveWheel backRight = null;
+    public SwerveWheel backLeft = null;
 
     private AHRS gyro = null;
 
     // Get distance between wheels
     private double r = Math.sqrt((L * L) + (W * W));
 
-    private boolean isFieldCentric = true;
+    private boolean isFieldCentric = false;
     private boolean gyroEnabled = false;
     
     private SwerveWheelController(){
@@ -40,10 +40,14 @@ public class SwerveWheelController extends SubsystemBase implements SwerveDrivet
         backRightDrive = new SwerveWheelDrive(SwerveWheelDriveType.TalonFX, backRightDriveID, true);
         backLeftDrive = new SwerveWheelDrive(SwerveWheelDriveType.TalonFX, backLeftDriveID, false);
 
-        frontRight = new SwerveWheel(frontRightDrive, frontRightTurnTalonID, frontRightEncoderID, frontRightEncoderOffset, "Front Right");
-        frontLeft = new SwerveWheel(frontLeftDrive, frontLeftTurnTalonID, frontLeftEncoderID, frontLeftEncoderOffset, "Front Left");
-        backRight = new SwerveWheel(backRightDrive, backRightTurnTalonID, backRightEncoderID, backRightEncoderOffset, "Back Right");
-        backLeft = new SwerveWheel(backLeftDrive, backLeftTurnTalonID, backLeftEncoderID, backLeftEncoderOffset, "Back Left");
+        frontRight = new SwerveWheel(frontRightDrive, frontRightTurnTalonID, frontRightEncoderID, frontRightEncoderOffset, "Front Right",
+                                     kPFR, kIFR, kDFR);
+        frontLeft = new SwerveWheel(frontLeftDrive, frontLeftTurnTalonID, frontLeftEncoderID, frontLeftEncoderOffset, "Front Left",
+                                    kPFL, kIFL, kDFL);
+        backRight = new SwerveWheel(backRightDrive, backRightTurnTalonID, backRightEncoderID, backRightEncoderOffset, "Back Right",
+                                    kPBR, kIBR, kDBR);
+        backLeft = new SwerveWheel(backLeftDrive, backLeftTurnTalonID, backLeftEncoderID, backLeftEncoderOffset, "Back Left",
+                                    kPBL, kIBL, kDBL);
 
         try {
             gyro = new AHRS(SPI.Port.kMXP); 
@@ -105,7 +109,7 @@ public class SwerveWheelController extends SubsystemBase implements SwerveDrivet
             // -------------------------------------
             // This bit of code normalizes the speed
             // -------------------------------------
-            double max = frontLeftSpeed;
+            double max = frontLeftSpeed * 0.0001;
             max = Math.max(max, frontRightSpeed);
             max = Math.max(max, backRightSpeed);
             max = Math.max(max, backLeftSpeed);
@@ -117,7 +121,12 @@ public class SwerveWheelController extends SubsystemBase implements SwerveDrivet
                 backLeftSpeed /= max;
             }
             // -------------------------------------
-
+            //System.out.printf("Gyro Value: %f\n", gyroValue);
+            //System.out.printf("Front Right measured angle error: %f\n", frontRight.getMeasurement());
+            //System.out.printf("Front Left measured angle: %f\n", frontLeftAngle);
+            //System.out.printf("Front Left measured angle error: %f\n", frontLeftAngle - frontLeft.getMeasurement());
+            //System.out.printf("Back Right measured angle error: %f\n", backRight.getMeasurement());
+            System.out.printf("Back Left measured angle error: %f\n", backLeft.getMeasurement());
             frontRight.setSetpoint(frontRightAngle);
             frontLeft.setSetpoint(frontLeftAngle);
             backRight.setSetpoint(backRightAngle);

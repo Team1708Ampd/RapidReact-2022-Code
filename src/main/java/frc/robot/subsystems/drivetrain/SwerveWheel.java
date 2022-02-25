@@ -22,7 +22,8 @@ public class SwerveWheel extends PIDSubsystem implements SwerveDrivetrainConstan
 
     private int countsWhenFrwd;
 
-    public SwerveWheel(SwerveWheelDrive drive, int m_steer, int analogEnc, int zeroOffset, String name) {
+    public SwerveWheel(SwerveWheelDrive drive, int m_steer, int analogEnc, int zeroOffset, String name, 
+                       double kP, double kI, double kD) {
         super(new PIDController(kP, kI, kD));
 
         this.name = name;
@@ -44,7 +45,7 @@ public class SwerveWheel extends PIDSubsystem implements SwerveDrivetrainConstan
         steerMotor.setSelectedSensorPosition(getAbsAngleDeg());
 
         // Set the input range of the PIDF so that it will only accept angles between 0 to 360 and set it to continuous
-        getController().enableContinuousInput(0, 360);
+        getController().enableContinuousInput(-180, 180);
 
         // Sets name for viewing in SmartDashboard
         this.setName(name);
@@ -66,8 +67,6 @@ public class SwerveWheel extends PIDSubsystem implements SwerveDrivetrainConstan
 
     @Override
     protected double getMeasurement() {
-        System.out.println("Motor: " + this.name);
-        System.out.println("Angle: " + getAbsAngleDeg());
         return getAbsAngleDeg();
     }
 

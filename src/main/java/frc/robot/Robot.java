@@ -37,9 +37,8 @@ public class Robot extends TimedRobot {
   private static SwerveWheelController swerve;
   private int count = 0;
   private static CommandScheduler scheduler = CommandScheduler.getInstance();
+  
 
-
-  //public static Controller driver;
   public static Controller joystick = new Controller(0);
 
 
@@ -98,21 +97,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    System.out.println("made it to autonomous periodic:" + count);
-     
-     if (count < 100)
-     {
-       swerve.drive(0.15, 0, 0, 0);
-     }
-     else if (count >= 100 && count <= 200)
-     {
-       swerve.drive(0, 0, 0, 0);
-     }
-     else {
-       count = 0;
-     }
-     count++;
-  }
+   }
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -127,7 +112,7 @@ public class Robot extends TimedRobot {
   {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-    }       
+    } 
   }
 
   /** This function is called once when the robot is disabled. */
