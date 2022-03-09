@@ -13,10 +13,22 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Shooter extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  CANSparkMax shootMotor = new CANSparkMax(21, MotorType.kBrushless);
+  CANSparkMax loadBallMotor = new CANSparkMax(22, MotorType.kBrushless);
 
-  public void shoot(){
+  public void Shoot(){
+    loadBallMotor.set(1.0);
   }
+
+  public void RaiseShooterHood()
+  {
+
+  }
+
+  public void ShooterOff()
+  {
+    loadBallMotor.set(0);
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

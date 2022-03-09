@@ -5,21 +5,22 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.output.commands.TeleopDrive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Spool;
+import frc.robot.subsystems.ClimberHook;
+import frc.robot.subsystems.Climbers;
 import frc.robot.subsystems.controller.Controller;
 import frc.robot.subsystems.drivetrain.SwerveWheelController;
-//import frc.robot.subsystems.controller.Controller;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import frc.robot.subsystems.IntakeArm;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -40,17 +41,19 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private Command m_autonomousCommand;
   private static SwerveWheelController swerve;
-  private int count = 0;
-  private static CommandScheduler scheduler = CommandScheduler.getInstance();
-  public static OI m_oi;
+  private static Scheduler scheduler = Scheduler.getInstance();
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
   public static Indexer indexer = new Indexer();
   public static Shooter shooter = new Shooter();
+  public static Spool spooler = new Spool();
+  public static Climbers climberBoys = new Climbers();
+  public static ClimberHook captHook = new ClimberHook();
+  public static IntakeArm intakeArm = new IntakeArm();
+  public static OI m_oi;
 
   public static Controller joystick = new Controller(0);
   public static TeleopDrive drive = new TeleopDrive();
-
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -65,6 +68,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     swerve = SwerveWheelController.getInstance();
+
   }
 
   /**
@@ -79,7 +83,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() 
   {
-    CommandScheduler.getInstance().run();
+    Scheduler.getInstance().run();
   }
 
   /**
@@ -96,28 +100,29 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    //System.out.println("Auto selected: " + m_autoSelected);
+    System.out.println("Auto selected: " + m_autoSelected);
 
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+      scheduler.add(m_autonomousCommand);
+      //Scheduler.getInstance().run();
     }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
    }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() 
   {
+    System.out.println("Teleop operation started");
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-    }
+    } 
     drive.initialize();
   }
 

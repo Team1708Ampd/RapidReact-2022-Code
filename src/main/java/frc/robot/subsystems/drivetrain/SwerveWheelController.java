@@ -4,14 +4,14 @@ import frc.robot.output.commands.TeleopDrive;
 
 
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.subsystems.drivetrain.SwerveWheel;
 import frc.robot.subsystems.drivetrain.SwerveWheelDrive;
 import frc.robot.subsystems.drivetrain.SwerveWheelDrive.SwerveWheelDriveType;
 
 import com.kauailabs.navx.frc.AHRS;
 
-public class SwerveWheelController extends SubsystemBase implements SwerveDrivetrainConstants {
+public class SwerveWheelController extends Subsystem implements SwerveDrivetrainConstants {
 
     private static SwerveWheelController instance = null;
 
@@ -35,9 +35,9 @@ public class SwerveWheelController extends SubsystemBase implements SwerveDrivet
     
     private SwerveWheelController(){
 
-        frontRightDrive = new SwerveWheelDrive(SwerveWheelDriveType.TalonFX, frontRightDriveID, true);
+        frontRightDrive = new SwerveWheelDrive(SwerveWheelDriveType.TalonFX, frontRightDriveID, false);
         frontLeftDrive = new SwerveWheelDrive(SwerveWheelDriveType.TalonFX, frontLeftDriveID, false);
-        backRightDrive = new SwerveWheelDrive(SwerveWheelDriveType.TalonFX, backRightDriveID, true);
+        backRightDrive = new SwerveWheelDrive(SwerveWheelDriveType.TalonFX, backRightDriveID, false);
         backLeftDrive = new SwerveWheelDrive(SwerveWheelDriveType.TalonFX, backLeftDriveID, false);
 
         frontRight = new SwerveWheel(frontRightDrive, frontRightTurnTalonID, frontRightEncoderID, frontRightEncoderOffset, "Front Right",
@@ -94,10 +94,10 @@ public class SwerveWheelController extends SubsystemBase implements SwerveDrivet
             double c = y1 - x2 * (W / r);
             double d = y1 + x2 * (W / r);
 
-            double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
-            double frontRightSpeed = Math.sqrt((b * b) + (d * d));
-            double backRightSpeed = Math.sqrt((a * a) + (d * d));
-            double backLeftSpeed = Math.sqrt((a * a) + (c * c));
+            double frontLeftSpeed = (Math.sqrt((b * b) + (c * c)) * 0.5);
+            double frontRightSpeed = (Math.sqrt((b * b) + (d * d)) * 0.5);
+            double backRightSpeed = (Math.sqrt((a * a) + (d * d)) * 0.5);
+            double backLeftSpeed = (Math.sqrt((a * a) + (c * c))) * 0.5;
 
             double backRightAngle = Math.atan2(a, d) * 180 / Math.PI;
             double backLeftAngle = Math.atan2(a, c) * 180 / Math.PI;
@@ -109,7 +109,7 @@ public class SwerveWheelController extends SubsystemBase implements SwerveDrivet
             // -------------------------------------
             // This bit of code normalizes the speed
             // -------------------------------------
-            double max = frontLeftSpeed * 0.0001;
+            double max = frontLeftSpeed;
             max = Math.max(max, frontRightSpeed);
             max = Math.max(max, backRightSpeed);
             max = Math.max(max, backLeftSpeed);
@@ -121,12 +121,12 @@ public class SwerveWheelController extends SubsystemBase implements SwerveDrivet
                 backLeftSpeed /= max;
             }
             // -------------------------------------
-            //System.out.printf("Gyro Value: %f\n", gyroValue);
-            //System.out.printf("Front Right measured angle error: %f\n", frontRight.getMeasurement());
+            //System.out.printf("Gyro Value: %f\n", y1);
+            //System.out.printf("Front Right measured angle error: %f\n", frontRightAngle - frontRight.returnPIDInput());
             //System.out.printf("Front Left measured angle: %f\n", frontLeftAngle);
-            //System.out.printf("Front Left measured angle error: %f\n", frontLeftAngle - frontLeft.getMeasurement());
-            //System.out.printf("Back Right measured angle error: %f\n", backRight.getMeasurement());
-            System.out.printf("Back Left measured angle error: %f\n", backLeft.getMeasurement());
+            //System.out.printf("Front Left measured angle error: %f\n", frontLeftAngle - frontLeft.returnPIDInput());
+            //System.out.printf("Back Right measured angle error: %f\n", backRightAngle - backRight.returnPIDInput());
+            //System.out.printf("Back Left measured angle error: %f\n", backLeftAngle - backLeft.returnPIDInput());
             frontRight.setSetpoint(frontRightAngle);
             frontLeft.setSetpoint(frontLeftAngle);
             backRight.setSetpoint(backRightAngle);
@@ -175,6 +175,12 @@ public class SwerveWheelController extends SubsystemBase implements SwerveDrivet
         }
 
         return instance;
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+        // TODO Auto-generated method stub
+        
     }
 }
 

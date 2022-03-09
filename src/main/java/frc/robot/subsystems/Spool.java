@@ -3,26 +3,35 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /** Add your docs here. */
-public class Intake extends Subsystem {
+public class Spool extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  WPI_VictorSPX intakeMotor = new WPI_VictorSPX(13);
+  CANSparkMax spoolShooterMotorL = new CANSparkMax(23, MotorType.kBrushless);
+  CANSparkMax spoolShooterMotorR = new CANSparkMax(21, MotorType.kBrushless);
 
-  public void intake(){
-      intakeMotor.set(ControlMode.PercentOutput, -1);
+
+  public void RaiseShooterHood()
+  {
+
   }
 
-  public void outtake(){
-      intakeMotor.set(ControlMode.PercentOutput, 1);
+  public void SpoolShooter()
+  {
+    spoolShooterMotorL.set(-0.67);
+    spoolShooterMotorR.set(0.67);
   }
 
-  public void intakeOff(){
-      intakeMotor.set(ControlMode.PercentOutput, 0);
+  public void SpoolOff()
+  {
+    spoolShooterMotorL.set(0);
+    spoolShooterMotorR.set(0);
   }
 
   @Override
@@ -31,4 +40,3 @@ public class Intake extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 }
-

@@ -2,9 +2,10 @@ package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
 public class SwerveWheelDrive {
 
@@ -12,13 +13,13 @@ public class SwerveWheelDrive {
 
 	SwerveWheelDriveType type;
 
-	SpeedController controller;
+	MotorController controller;
 
 	public SwerveWheelDrive(SwerveWheelDriveType type, int id, boolean inverted) {
 		if (type == SwerveWheelDriveType.TalonSRX) {
 
 			// Create TalonSRX object with the ID from the constructor
-			WPI_TalonSRX drive = new WPI_TalonSRX(id);
+			WPI_TalonSRX drive = new WPI_TalonSRX(id);			
 
 			drive.configFactoryDefault();
 
@@ -59,6 +60,8 @@ public class SwerveWheelDrive {
 			// Create TalonFX object with the ID from the constructor
 			WPI_TalonFX drive = new WPI_TalonFX(id);
 
+			updateStatusFrames(drive);
+
 			drive.configFactoryDefault();
 
 			// Invert the motor depending on the inverted value
@@ -71,4 +74,15 @@ public class SwerveWheelDrive {
 	public void setSpeed(double speed) {
 		controller.set(speed);
 	}
+
+	private void updateStatusFrames(WPI_TalonFX motor)
+    {
+        motor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 255);       
+        motor.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 255);        
+        motor.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat, 255);      
+        motor.setStatusFramePeriod(StatusFrame.Status_6_Misc, 255);     
+        motor.setStatusFramePeriod(StatusFrame.Status_10_Targets, 255);        
+        motor.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 255);        
+        motor.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 255);      
+    }
 }

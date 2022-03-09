@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Commands;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
@@ -22,6 +22,7 @@ public class IndexerReverse extends Command {
   @Override
   protected void execute() {
     Robot.indexer.indexerReverse();
+    Robot.elevator.elevatorDown();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -34,6 +35,7 @@ public class IndexerReverse extends Command {
   @Override
   protected void end() {
     Robot.indexer.indexerOff();
+    Robot.elevator.elevatorOff();
   }
 
   // Called when another command which requires one or more of the same
@@ -41,5 +43,6 @@ public class IndexerReverse extends Command {
   @Override
   protected void interrupted() {
     Robot.indexer.indexerOff();
+    Robot.elevator.elevatorOff();
   }
 }

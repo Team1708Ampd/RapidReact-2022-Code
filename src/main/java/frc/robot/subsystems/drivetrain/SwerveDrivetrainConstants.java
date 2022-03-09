@@ -6,34 +6,59 @@ public interface SwerveDrivetrainConstants {
 	public final double L = 24.5;
 	public final double W = 21.1;
 
-	// PIDF FRONT RIGHT - NO TOUCHIE
-	public final double kPFR = 0.008;
-	public final double kIFR = 0.00005;
-	public final double kDFR = 0.000000;
+	// // PIDF FRONT RIGHT - DO NOT CHANGE
+	// public final double kPFR = 0.006;
+	// public final double kIFR = 0.000002;
+	// public final double kDFR = 0.0000;
+	// public final double kFFR = 0.0;
+	
+	// // PIDF FRONT LEFT - DO NOT CHANGE
+	// public final double kPFL = 0.0055;
+	// public final double kIFL = 0.00001;
+	// public final double kDFL = 0.00256;
+	// public final double kFFL = 0.0;
+
+	// // PIDF BACK LEFT - DO NOT CHANGE
+	// public final double kPBL = 0.006;
+	// public final double kIBL = 0.000004;
+	// public final double kDBL = 0.00256;
+	// public final double kFBL = 0.0;
+
+	// // PIDF BACK RIGHT - DO NOT CHANGE
+	// public final double kPBR = 0.006;
+	// public final double kIBR = 0.000002;
+	// public final double kDBR = 0.00128;
+	// public final double kFBR = 0.0;
+
+	// PIDF FRONT RIGHT - DO NOT CHANGE
+	public final double kPFR = 0.0065;
+	public final double kIFR = 0.000008;
+	public final double kDFR = 0.00300;
 	public final double kFFR = 0.0;
 	
-	// PIDF FRONT LEFT - NO TOUCHIE
-	public final double kPFL = 0.009;
-	public final double kIFL = 0.0001;
-	public final double kDFL = 0.000001;
+	// PIDF FRONT LEFT - DO NOT CHANGE
+	public final double kPFL = 0.0065;
+	public final double kIFL = 0.000008;
+	public final double kDFL = 0.00256;
 	public final double kFFL = 0.0;
 
-	// PIDF BACK LEFT
-	public final double kPBL = 0.008;
-	public final double kIBL = 0.00005;
-	public final double kDBL = 0.00000;
+	// PIDF BACK LEFT - DO NOT CHANGE
+	public final double kPBL = 0.0065;
+	public final double kIBL = 0.000008;
+	public final double kDBL = 0.00256;
 	public final double kFBL = 0.0;
 
-	// PIDF BACK RIGHT
-
-	public final double kPBR = 0.007;
-	public final double kIBR = 0.00003;
-	public final double kDBR = 0.0000;
+	// PIDF BACK RIGHT - DO NOT CHANGE
+	public final double kPBR = 0.006;
+	public final double kIBR = 0.000008;
+	public final double kDBR = 0.00128;
 	public final double kFBR = 0.0;
 
+	// Scaling ratio for geared motor gear ration
+	public final double motorOutputScaleRatio = 6.3;
 	
-	// Quadrature Encoder Ticks per Rotation
-	public final int QUAD_COUNTS_PER_ROT = 1658;
+	// Integrated Encoder Ticks per Rotation
+	public final int INT_COUNTS_PER_ROT = 2048;
 
 	// Talon FX Turn Motor CAN ID
 	public final int frontLeftTurnTalonID = 5;
@@ -54,8 +79,8 @@ public interface SwerveDrivetrainConstants {
 	public final int backRightEncoderID = 2;
 
 	// Offset of analog to make encoders face forward
-	public final int frontLeftEncoderOffset =  -115;
-	public final int frontRightEncoderOffset = -90;
-	public final int backLeftEncoderOffset =   0;
-	public final int backRightEncoderOffset =  0;
+	public final int frontLeftEncoderOffset =  -100;
+	public final int frontRightEncoderOffset = 45;
+	public final int backLeftEncoderOffset =   5;
+	public final int backRightEncoderOffset =  135;
 }
