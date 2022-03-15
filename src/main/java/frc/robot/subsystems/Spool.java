@@ -16,6 +16,11 @@ public class Spool extends Subsystem {
   CANSparkMax spoolShooterMotorL = new CANSparkMax(23, MotorType.kBrushless);
   CANSparkMax spoolShooterMotorR = new CANSparkMax(21, MotorType.kBrushless);
 
+  private static final double SPOOL_VELOCITY_RPM = 10.0;
+
+  public Spool()
+  {
+  }
 
   public void RaiseShooterHood()
   {
@@ -33,6 +38,27 @@ public class Spool extends Subsystem {
     spoolShooterMotorL.set(0);
     spoolShooterMotorR.set(0);
   }
+
+  public boolean isShooterSpooled()
+  {
+    boolean spooled = false;
+
+    //System.out.printf("Spool velocity %d \n", )
+
+    if ((spoolShooterMotorL.getEncoder().getVelocity() >= SPOOL_VELOCITY_RPM) &&
+        (spoolShooterMotorR.getEncoder().getVelocity() >= SPOOL_VELOCITY_RPM))
+    {
+      spooled = true;
+    }
+
+    return spooled;
+  }
+
+  public void setSpoolPower(double spoolPwr)
+  {
+
+  }
+
 
   @Override
   public void initDefaultCommand() {

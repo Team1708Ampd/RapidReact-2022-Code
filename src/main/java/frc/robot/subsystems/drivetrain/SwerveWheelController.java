@@ -123,7 +123,6 @@ public class SwerveWheelController extends Subsystem implements SwerveDrivetrain
             // -------------------------------------
             //System.out.printf("Gyro Value: %f\n", y1);
             //System.out.printf("Front Right measured angle error: %f\n", frontRightAngle - frontRight.returnPIDInput());
-            //System.out.printf("Front Left measured angle: %f\n", frontLeftAngle);
             //System.out.printf("Front Left measured angle error: %f\n", frontLeftAngle - frontLeft.returnPIDInput());
             //System.out.printf("Back Right measured angle error: %f\n", backRightAngle - backRight.returnPIDInput());
             //System.out.printf("Back Left measured angle error: %f\n", backLeftAngle - backLeft.returnPIDInput());
@@ -143,6 +142,30 @@ public class SwerveWheelController extends Subsystem implements SwerveDrivetrain
             backRight.setSpeed(0);
             backLeft.setSpeed(0);
         }
+    }
+
+    public void turnAtSpeed(double speed, double angle)
+    {
+
+        frontRight.setSetpoint(angle);
+        frontLeft.setSetpoint(angle);
+        backRight.setSetpoint(-angle);
+        backLeft.setSetpoint(-angle); 
+
+        if (speed > 0.05 )
+        {
+            frontLeft.setSpeed(speed);
+            frontRight.setSpeed(speed);
+            backRight.setSpeed(speed);
+            backLeft.setSpeed(speed);
+        }
+        else{
+            frontLeft.setSpeed(0);
+            frontRight.setSpeed(0);
+            backRight.setSpeed(0);
+            backLeft.setSpeed(0);
+        }
+        
     }
 
     // Zero the Gryo

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.commands.TurnToAngleCommand;
 import frc.robot.output.commands.TeleopDrive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
@@ -16,6 +17,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spool;
+import frc.robot.subsystems.Vision.Limelight;
+import frc.robot.subsystems.AutoCommandModule;
 import frc.robot.subsystems.ClimberHook;
 import frc.robot.subsystems.Climbers;
 import frc.robot.subsystems.controller.Controller;
@@ -24,6 +27,8 @@ import frc.robot.subsystems.IntakeArm;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
+import javax.sound.sampled.LineEvent;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -54,7 +59,8 @@ public class Robot extends TimedRobot {
 
   public static Controller joystick = new Controller(0);
   public static TeleopDrive drive = new TeleopDrive();
-
+  public static Limelight lime;
+  public static AutoCommandModule autoCommand;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.0
@@ -68,6 +74,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     swerve = SwerveWheelController.getInstance();
+    lime = Limelight.getInstance();
+    lime.setPipeline(1);
+    autoCommand = new AutoCommandModule(shooter, spooler, intake, swerve, indexer, elevator, lime);
 
   }
 
@@ -102,6 +111,7 @@ public class Robot extends TimedRobot {
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
 
+    //scheduler.add(new TurnToAngleCommand(0.01, 0, 0, swerve, 90));    
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -113,7 +123,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-   }
+    autoCommand.periodic();    
+
+
+  }
 
   /** This function is called once when teleop is enabled. */
   @Override
