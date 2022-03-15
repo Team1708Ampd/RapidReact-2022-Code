@@ -1,23 +1,23 @@
-package frc.robot.subsystems.Vision;
+package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import frc.robot.subsystems.Vision.Limelight;
 import frc.robot.subsystems.drivetrain.SwerveWheelController;
 
-public class PrecisionAim extends PIDSubsystem{
+public class AimbotAimCommand extends PIDCommand{
 
     SwerveWheelController DriveModule;
     Limelight LimeModule;
 
-    public PrecisionAim(double p, double i, double d, Limelight lime, SwerveWheelController drive) {
+    public AimbotAimCommand(double p, double i, double d, Limelight lime, SwerveWheelController drive) {
         super(p, i, d);
         //TODO Auto-generated constructor stub
         LimeModule = lime;
         DriveModule = drive;
 
         getPIDController().setAbsoluteTolerance(0.5);  
-
     }
-
 
     @Override
     protected double returnPIDInput() {
@@ -35,12 +35,6 @@ public class PrecisionAim extends PIDSubsystem{
         System.out.printf("PID Effort: %.2f\n", output);
     }
 
-    @Override
-    protected void initDefaultCommand() {
-        // TODO Auto-generated method stub
-        
-    }
-
     public void NewTarget()
     {
         getPIDController().enable();
@@ -50,6 +44,13 @@ public class PrecisionAim extends PIDSubsystem{
     public void EndAim()
     {
         getPIDController().disable();
+    }
+
+
+    @Override
+    protected boolean isFinished() {
+        // TODO Auto-generated method stub
+        return false;
     }
     
 }

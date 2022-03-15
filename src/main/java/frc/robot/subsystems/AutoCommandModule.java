@@ -2,8 +2,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.commands.AimbotAimCommand;
 import frc.robot.subsystems.Vision.Limelight;
-import frc.robot.subsystems.Vision.PrecisionAim;
 import frc.robot.subsystems.drivetrain.SwerveWheelController;
 
 public class AutoCommandModule {
@@ -18,7 +18,7 @@ public class AutoCommandModule {
     private boolean inStartUp = false;
     private boolean ballLoaded = false;
     private boolean targetSighted = false;
-    private PrecisionAim aimBot;
+    private AimbotAimCommand aimBot;
     
 
     public AutoCommandModule(Shooter shoot, Spool spool, Intake intake, 
@@ -32,7 +32,7 @@ public class AutoCommandModule {
         indexerModule = index;
         elevatorModule = elevator;
         limeModule = lime;
-        aimBot = new PrecisionAim(0.5, 0, 0, lime, drive);
+        aimBot = new AimbotAimCommand(0.5, 0, 0, lime, drive);
 
     }
 

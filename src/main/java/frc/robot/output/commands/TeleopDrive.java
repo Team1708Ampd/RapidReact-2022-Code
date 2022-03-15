@@ -27,10 +27,10 @@ public class TeleopDrive extends Command {
 
     @Override
     public void execute() {
+
+        System.out.printf("Robot left stick: %.2f\n", Robot.joystick.getControllerLeftStickX());
       
-        //swerve.drive(Robot.joystick.getControllerLeftStickX(), Robot.joystick.getControllerLeftStickY(), Robot.joystick.getControllerRightStickX(), swerve.gyroAngle());
-        //swerve.turn(90);
-        //swerve.turn(0.5);
+        swerve.drive(Robot.joystick.getControllerLeftStickX(), Robot.joystick.getControllerLeftStickY(), Robot.joystick.getControllerRightStickX(), swerve.gyroAngle());
     
     }
 

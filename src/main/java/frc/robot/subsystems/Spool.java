@@ -18,15 +18,6 @@ public class Spool extends Subsystem {
 
   private static final double SPOOL_VELOCITY_RPM = 10.0;
 
-  public Spool()
-  {
-  }
-
-  public void RaiseShooterHood()
-  {
-
-  }
-
   public void SpoolShooter()
   {
     spoolShooterMotorL.set(-0.67);
@@ -43,8 +34,6 @@ public class Spool extends Subsystem {
   {
     boolean spooled = false;
 
-    //System.out.printf("Spool velocity %d \n", )
-
     if ((spoolShooterMotorL.getEncoder().getVelocity() >= SPOOL_VELOCITY_RPM) &&
         (spoolShooterMotorR.getEncoder().getVelocity() >= SPOOL_VELOCITY_RPM))
     {
@@ -56,7 +45,7 @@ public class Spool extends Subsystem {
 
   public void setSpoolPower(double spoolPwr)
   {
-
+    
   }
 
 

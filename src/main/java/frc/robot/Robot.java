@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private Command m_autonomousCommand;
-  private static SwerveWheelController swerve;
+  public static SwerveWheelController swerve;
   private static Scheduler scheduler = Scheduler.getInstance();
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
@@ -76,7 +76,6 @@ public class Robot extends TimedRobot {
     swerve = SwerveWheelController.getInstance();
     lime = Limelight.getInstance();
     lime.setPipeline(1);
-    autoCommand = new AutoCommandModule(shooter, spooler, intake, swerve, indexer, elevator, lime);
 
   }
 
@@ -93,6 +92,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() 
   {
     Scheduler.getInstance().run();
+    
   }
 
   /**
@@ -109,9 +109,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
-
-    //scheduler.add(new TurnToAngleCommand(0.01, 0, 0, swerve, 90));    
+    System.out.println("Auto selected: " + m_autoSelected);   
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -123,7 +121,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    autoCommand.periodic();    
+      
 
 
   }
