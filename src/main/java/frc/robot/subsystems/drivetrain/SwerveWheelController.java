@@ -168,6 +168,29 @@ public class SwerveWheelController extends Subsystem implements SwerveDrivetrain
         
     }
 
+    public void driveForward(double speed){
+        if (speed > 0.05 )
+        {
+            frontLeft.setSpeed(speed);
+            frontRight.setSpeed(speed);
+            backRight.setSpeed(speed);
+            backLeft.setSpeed(speed);
+        }
+        else{
+            frontLeft.setSpeed(0);
+            frontRight.setSpeed(0);
+            backRight.setSpeed(0);
+            backLeft.setSpeed(0);
+        }   
+    }
+
+    public void stop(){
+        frontLeft.setSpeed(0);
+        frontRight.setSpeed(0);
+        backRight.setSpeed(0);
+        backLeft.setSpeed(0);
+    }
+
     // Zero the Gryo
     public void resetGyro() {
         gyro.reset();
