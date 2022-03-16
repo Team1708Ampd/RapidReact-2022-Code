@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.Commands.AutoCommandGroup;
 import frc.robot.commands.TurnToAngleCommand;
 import frc.robot.output.commands.TeleopDrive;
 import frc.robot.subsystems.Elevator;
@@ -113,7 +114,7 @@ public class Robot extends TimedRobot {
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      scheduler.add(m_autonomousCommand);
+      scheduler.add(new AutoCommandGroup());
       //Scheduler.getInstance().run();
     }
   }

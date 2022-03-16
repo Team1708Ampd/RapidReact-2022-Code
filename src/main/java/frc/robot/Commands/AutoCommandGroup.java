@@ -5,6 +5,7 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Robot;
 
 public class AutoCommandGroup extends CommandGroup {
   /** Add your docs here. */
@@ -16,6 +17,13 @@ public class AutoCommandGroup extends CommandGroup {
     addParallel(new SpoolShooter());
     addParallel(new LoadBall());
     addSequential(new FireShot());
+    addSequential(new TurnToAngleCommand(0.5, 0, 0, Robot.swerve, 180, true));
+    addSequential(new DriveForward(Robot.swerve, 1));
+    //addParallel(new AutoIntakeCommand());
+
+    /*TODO: create an autonomous intake command to run while driving forward to grab a second ball
+            
+    */
     
     // To run multiple commands at the same time,
     // use addParallel()
