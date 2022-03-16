@@ -22,7 +22,8 @@ public class AutoCommandGroup extends CommandGroup {
     //addParallel(new AutoIntakeCommand());
 
     /*TODO: create an autonomous intake command to run while driving forward to grab a second ball
-            
+            target and aim for the goal after grabbing the second ball
+            go through the firing sequence again
     */
     
     // To run multiple commands at the same time,
